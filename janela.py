@@ -1,5 +1,4 @@
 import tkinter as tk
-import tinydb
 from others_.cadastro import database
 from tkinter import messagebox
 from tkinter import ttk
