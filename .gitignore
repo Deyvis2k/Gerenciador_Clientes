@@ -2,6 +2,18 @@ database.json
 
 __pycache__/janela.cpython-311.pyc
 *.pyc
+<<<<<<< Updated upstream
 
 __pycache__
 .venv
+=======
+__pycache__/janela.cpython-311.pyc
+/__pycache__
+/__pycache__
+/__pycache__
+/others_/__pycache__
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+>>>>>>> Stashed changes
