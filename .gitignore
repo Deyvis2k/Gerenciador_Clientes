@@ -3,4 +3,5 @@ database.json
 __pycache__/janela.cpython-311.pyc
 *.pyc
 
-__pycache__/
+__pycache__
+.venv
