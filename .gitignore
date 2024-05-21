@@ -4,4 +4,4 @@ __pycache__/janela.cpython-311.pyc
 *.pyc
 
 __pycache__
-.venv
+venv/
