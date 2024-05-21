@@ -1,5 +1,5 @@
 import customtkinter as tk
-from cadastro import Admin, database
+from others_.cadastro import database
 from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
@@ -15,9 +15,9 @@ BLUE = "#0000ff"
 PINK = "#ffcbdb"
 GRAPHITE = "#2e2e2e"
 
-class App(Admin):
+class App():
     def __init__(self, database,root):
-        super().__init__(database)
+        super().__init__()
         self.root = root
         self.fonte = ('arial',10,'bold')
         self.root.title("GERENCIADOR DE CLIENTES")
@@ -44,6 +44,7 @@ class App(Admin):
         
         
         
+        
         #adicionar clientes: 
         self.texto_adicionar = tk.CTkLabel(root, text="CADASTRAR CLIENTE:", font= ('arial', 12, 'bold'))
         self.texto_adicionar.place(x= 450, y= 20)
@@ -67,19 +68,20 @@ class App(Admin):
         self.texto_preco = tk.CTkLabel(root, text="Preço da tosa:", font= ('arial', 10, 'bold'), text_color=PINK)
         self.texto_preco.place(x= 450, y= 100)
         
-        #adicionar clientes - HORA
-        self.adicionar_hora_entry = tk.CTkEntry(root, placeholder_text="Digite a hora(hr:min)")
+        #adicionar clientes - data
+        self.adicionar_hora_entry = tk.CTkEntry(root, placeholder_text="Digite o dia e hora")
         self.adicionar_hora_entry.place(x=450, y=187)
         
         self.texto_hora = tk.CTkLabel(root, text="Hora:", font= ('arial', 10, 'bold') , text_color=PINK)
         self.texto_hora.place(x= 450, y= 158)
         
         #botão opções
-        self.lista_botao =  tk.CTkOptionMenu(root, hover=True, 
-                                       values=["listar database","excluir database"],
-                                       button_color="white", variable= self.opcao_selecionadas, text_color="pink", fg_color="gray")
+        self.lista_botao =  tk.CTkOptionMenu(root, 
+                                       values=["listar database","excluir database","media preço","total"],
+                                       button_color="white",variable= self.opcao_selecionadas, text_color="pink", fg_color="gray", dropdown_text_color='pink')
         
         self.lista_botao.place(x=230,y=120)
+        self.opcao_selecionadas.set("Opções:")
         
         self.opcao_selecionadas.trace_add('write', self.opcoes_botao)
         
@@ -90,16 +92,24 @@ class App(Admin):
     def adicionar_cliente(self):
         try:
             if self.adicionar_nome_entry.get() != "" and self.adicionar_preco_entry.get() != "" and self.adicionar_hora_entry.get() != "":
+                cachorro = self.adicionar_janela_cachorro()
+                
+                cachorro = [item for item in cachorro if item is not None]
+                
+                if not cachorro:
+                    return
+                
                 id_numero = len(self.lista.get_children()) + 1
                 nome = self.adicionar_nome_entry.get()
                 preco = float(self.adicionar_preco_entry.get())
                 horario = self.adicionar_hora_entry.get()
                 horario_formatado = self.formatar_horario(horario)
+                
             
                 if horario_formatado != None:
-                    data = {"nome": nome, "preco": preco, "horario": horario_formatado}
+                    data = {"nome": nome,"cachorro": cachorro ,"preco": preco, "data": horario_formatado}
                     self.database.insert(data)
-                    self.lista.insert("", "end", values=(id_numero, nome, f'R${preco:.2f}', horario_formatado))
+                    self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(cachorro)}", f'R${preco:.2f}', horario_formatado))
                     
             else:    
                 self.exibir_erro("ERRO: ALGUM DOS CAMPOS ESTA VÁZIO.")
@@ -116,7 +126,8 @@ class App(Admin):
 
         for item in data:
             id_numero = item.doc_id
-            self.lista.insert("", "end", values=(id_numero, item["nome"], f'R${item["preco"]:.2f}', item["horario"]), tags="odd")      
+            cachorros = item["cachorro"]
+            self.lista.insert("", "end", values=(id_numero, item["nome"], f"{', '.join(cachorros)}",f'R${item["preco"]:.2f}', item["data"]), tags="odd")      
           
     def arvore_frame(self, root):
         self.estilo = ttk.Style()
@@ -130,7 +141,7 @@ class App(Admin):
         
         self.estilo.configure("Custom.Treeview",background = "lightgray", foreground="black", font=("arial",9,'bold'), fieldbackground="lightgray")
         
-        nome_colunas = ("ID","Nome","Preço","Hora")
+        nome_colunas = ("ID","Nome","Cachorro","Preço","Data")
         
         self.lista = ttk.Treeview(root, height=5,columns= nome_colunas, show=["headings","tree"],style= "Custom.Treeview")
         
@@ -140,26 +151,45 @@ class App(Admin):
         self.lista.heading("#0", text="")
         self.lista.heading("#1", text="ID")
         self.lista.heading("#2", text="Nome")
-        self.lista.heading("#3", text="Preço")
-        self.lista.heading("#4", text="Hora")
+        self.lista.heading("#3", text="Cachorro(s)")
+        self.lista.heading("#4", text="Preço")
+        self.lista.heading("#5", text="Data")
         
         self.lista.column("#0", width=0, stretch=False)
-        self.lista.column("#1", width=3, anchor="nw")
-        self.lista.column("#2", width=65)
-        self.lista.column("#3", width=55)
-        self.lista.column("#4", width=45)
+        self.lista.column("#1", width=29, stretch=False)
+        self.lista.column("#2", width=160, stretch=False)
+        self.lista.column("#3", width=180, stretch=False)
+        self.lista.column("#4", width=100, stretch=False)
+        self.lista.column("#5", width=120, stretch=False)
         
         self.lista.pack(fill="both", side="bottom")
+        
         
         self.scrollbar = ttk.Scrollbar(root, orient="vertical", command=self.lista.yview)
         self.scrollbar.place(x=585, y=275, height=140)  
         self.lista.configure(yscrollcommand=self.scrollbar.set)
+               
+    
+    #12/12/2024 12:3
+    def adicionar_janela_cachorro(self) -> list[str] | None:
+       racas = []
+       while True:
+            nova = tk.CTkInputDialog(text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color=PINK, button_fg_color='gray')
+            raca = nova.get_input()
         
+            racas.append(raca)
         
+            
+            if raca == None:
+                break
+            else:
+                continue
+            
+            
+       return racas
         
-        
-        
-        
+                         
+               
     def remover_cliente(self):
       try:
         if self.database.all() != []:
@@ -193,6 +223,10 @@ class App(Admin):
             self.carregar_dados()
         elif selecionado == "excluir database":
             self.excluir_tudo()
+        elif selecionado == "media preço":
+            self.calcular_media()
+        elif selecionado == "total":
+            self.total_preco()
     
             
     def exibir_erro(self, texto):
@@ -200,14 +234,37 @@ class App(Admin):
         
     def formatar_horario(self,horarios):
      try:
-        hora_formatada = datetime.strptime(horarios, '%H:%M')
-        return hora_formatada.strftime('%H:%M')
+        hora_formatada = datetime.strptime(horarios, "%d/%m/%Y %H:%M")
+        return hora_formatada.strftime("%d/%m/%Y %H:%M")
      except ValueError:
-        self.exibir_erro("Erro de Formato, Por favor, insira o horário no formato HH:MM")
+        self.exibir_erro("Erro de Formato, Por favor, insira o horário no formato dia/mes/ano hora:minuto")
         return None
+    
+    def calcular_media(self) -> float | None:
+        db = database.all()
+        if db != [] and len(db) > 1:
+            for item in db:
+                total_precos = sum(item['preco'] for item in db)
+                media = total_precos/len(db)
+            messagebox.showinfo(title="MEDIA", message=f'A média de -{len(db)}- tosas é R${media:,.2f}')
+        else:
+            self.exibir_erro("Não há itens suficientes")
+            return None
+        
+    def total_preco(self) -> float | None:
+        db = database.all()
+        
+        if db != []:
+            for item in db:
+                total = sum(item['preco'] for item in db)
+            messagebox.showinfo(title="TOTAL", message=f'O preço total de -{len(db)}- tosas é R${total:,.2f}')
+        else:
+            self.exibir_erro("Não há nenhum item")
+            return None
+    
         
             
 if __name__ == "__main__":
    core = tk.CTk()
-   app = App(database, core)
+   app = App(database,core)
    app.root.mainloop()

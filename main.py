@@ -2,12 +2,12 @@
     CHECAR CONSULTA, REMOVER CONSULTA, MÉDIA, TOTAL
     EXCLUIR DATABASE.
 """
-
+import customtkinter as tk
 from others_.cadastro import database
-from janela import App
+from gerenciador import App
 
 
 
-
-app = App(database)
-app.mainloop()
+core = tk.CTk()
+app = App(database,core)
+app.root.mainloop()

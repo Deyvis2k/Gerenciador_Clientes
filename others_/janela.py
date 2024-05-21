@@ -1,5 +1,5 @@
 import tkinter as tk
-from others_.cadastro import database
+from cadastro import database
 from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
