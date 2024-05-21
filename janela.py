@@ -3,8 +3,6 @@ from others_.cadastro import database
 from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
-from PIL import Image, ImageTk
-
 
 #cores
 BLACK = "#000"
@@ -53,12 +51,10 @@ class App(tk.Tk):
         
         #agradecimentos - -------------------------------------------------------------------
         
-        self.titulo_agradecimento = tk.Label(self,text="Agradecimento:", font=('arial', 8, 'normal'), fg='purple', bg='lightgray')
+        self.titulo_agradecimento = tk.Label(self,text="Agradecimento:", font=('arial', 10, 'normal'), fg='purple', bg='lightgray')
         self.titulo_agradecimento.place(x=1,y=15)
         
-        self.imagem_piaget = Image.open('imgs/piaget.png').resize((46,40))
-        self.imagem_piaget_tk = ImageTk.PhotoImage(self.imagem_piaget)
-        self.imagem_piaget_label = tk.Button(self, image= self.imagem_piaget_tk, command=self.agradecimentos) # type: ignore
+        self.imagem_piaget_label = tk.Button(self,text="alunos",font=('arial', 8, 'normal'), command=self.agradecimentos) # type: ignore
         self.imagem_piaget_label.place(x=15, y=40)
         
         
