@@ -124,7 +124,7 @@ class App(tk.Tk):
 
         for item in data:
             id_numero = item.doc_id
-            self.lista.insert("", "end", values=(id_numero, item["nome"], f'R${item["preco"]:,.2f}', item["horario"]))      
+            self.lista.insert("", "end", values=(id_numero, item["nome"], f'R${item["preco"]:,.2f}', item["data"]))      
           
     def arvore_frame(self):
         self.style.configure("Custom.Treeview.Heading",background = "black", foreground="purple", font=("arial",10,'bold'))

@@ -35,7 +35,7 @@ class Admin:
                 print('ID:', item.doc_id)
                 print('Nome:', item['nome'])
                 print(f'Preço: R$ {item["preco"]:.2f}')
-                print('Horário:', item['horario'])
+                print('Data:', item['data'])
                 print()
         else:
             print('ERRO: Não há nada para listar. Porfavor cadastre novos clientes.')
