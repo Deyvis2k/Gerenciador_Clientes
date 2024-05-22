@@ -96,6 +96,7 @@ class App():
                 if not cachorro:
                     return
                 
+                
                 id_numero = len(self.lista.get_children()) + 1
                 nome = self.adicionar_nome_entry.get()
                 preco = float(self.adicionar_preco_entry.get())
@@ -104,9 +105,13 @@ class App():
                 
             
                 if horario_formatado != None:
+                    for item in cachorro:
+                        novo_cachorro = item
+                    
+                    
                     data = {"nome": nome,"cachorro": cachorro ,"preco": preco, "data": horario_formatado}
                     self.database.insert(data)
-                    self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(cachorro)}", f'R${preco:.2f}', horario_formatado))
+                    self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(novo_cachorro)}", f'R${preco:.2f}', horario_formatado))
                     self.carregar_dados()
             else:    
                 self.exibir_erro("ERRO: ALGUM DOS CAMPOS ESTA VÁZIO.")
@@ -192,12 +197,12 @@ class App():
         lista=[]
         
         if arquivo != []:
-            for item in arquivo:
+            for item  in arquivo:
                 nome = item['nome']
-                cachorro = ','.join(item['cachorro'])
+                cachorro = ' & '.join(item['cachorro'])
                 preco = str(item['preco'])
                 data = item['data']
-                lista.append([nome,f"'({cachorro})'", f'R${preco}', data])
+                lista.append([nome,f"({cachorro})", f'R${preco}', data])
                       
             try:
                 with open(nome_arquivo_csv, 'w', newline='') as arquivo_csv:
@@ -206,7 +211,8 @@ class App():
             except Exception:
                 self.exibir_erro('ERROR')
         else:
-            self.exibir_erro("ERRO: Não há nada para fazer um sumário")
+            with open(nome_arquivo_csv, 'w', newline='') as arquivo_vazio_csv:
+                arquivo_vazio_csv.write(' ')
         
                
     def remover_cliente(self):
