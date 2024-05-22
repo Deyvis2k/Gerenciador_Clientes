@@ -10,6 +10,9 @@ from dataclasses import dataclass
     janela.py
 '"""
 
+
+
+
 database = TinyDB('database.json', indent= 4)
 database.default_table_name = 'admin'
 

@@ -3,17 +3,10 @@ from others_.cadastro import database
 from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
+import csv
 
 
-#cores
-BLACK = "#000"
-WHITE = "#fff"
-GRAY = "#808080"
-GREEN = "#00ff00"
-RED = "#ff0000"
-BLUE = "#0000ff"
-PINK = "#ffcbdb"
-GRAPHITE = "#2e2e2e"
+
 
 class App():
     def __init__(self, database,root):
@@ -31,7 +24,7 @@ class App():
         self.texto_remover = tk.CTkLabel(root, text="REMOVER CLIENTE:", font= ('arial', 12, 'bold'))
         self.texto_remover.place(x= 230, y= 20)
         
-        self.texto_id = tk.CTkLabel(root, text="Digite um número de ID válido.", font= ('arial', 9, 'bold'), text_color=PINK)
+        self.texto_id = tk.CTkLabel(root, text="Digite um número de ID válido.", font= ('arial', 9, 'bold'), text_color='pink')
         self.texto_id.place(x= 230, y= 50)
         
         self.remover_botao = tk.CTkButton(root, text="Remover", command = self.remover_cliente, width=50,font= self.fonte, text_color="pink", fg_color="gray")
@@ -42,9 +35,6 @@ class App():
         self.remove_entry = tk.CTkEntry(root, width=120, validate="key", validatecommand=(self.valida_int, "%P"))
         self.remove_entry.place(x=230, y=80)
         
-        
-        
-        
         #adicionar clientes: 
         self.texto_adicionar = tk.CTkLabel(root, text="CADASTRAR CLIENTE:", font= ('arial', 12, 'bold'))
         self.texto_adicionar.place(x= 450, y= 20)
@@ -52,9 +42,16 @@ class App():
         self.botao_adicionar = tk.CTkButton(root, text="Enviar" ,font= self.fonte, width=50, command= self.adicionar_cliente, text_color="pink", fg_color="gray")
         self.botao_adicionar.place(x = 450, y = 230)
         
+        
+        self.botao_csv = tk.CTkButton(root, text="Fazer Sumário", width=50,font= self.fonte, text_color="pink", fg_color="gray", command= self.enviar_para_csv)
+        self.botao_csv.place(x=230,y= 162)
+        
+        
+        
+        
 
         #adicionar clientes - NOME
-        self.texto_nome = tk.CTkLabel(root, text="Nome:", font= ('arial', 10, 'bold'),  text_color=PINK)
+        self.texto_nome = tk.CTkLabel(root, text="Nome:", font= ('arial', 10, 'bold'),  text_color='pink')
         self.texto_nome.place(x= 450, y= 45)
         
         self.adicionar_nome_entry = tk.CTkEntry(root, placeholder_text="Digite seu nome")
@@ -65,14 +62,14 @@ class App():
         self.adicionar_preco_entry = tk.CTkEntry(root,placeholder_text="Digite o preço")
         self.adicionar_preco_entry.place(x=450, y=130)
         
-        self.texto_preco = tk.CTkLabel(root, text="Preço da tosa:", font= ('arial', 10, 'bold'), text_color=PINK)
+        self.texto_preco = tk.CTkLabel(root, text="Preço da tosa:", font= ('arial', 10, 'bold'), text_color='pink')
         self.texto_preco.place(x= 450, y= 100)
         
         #adicionar clientes - data
         self.adicionar_hora_entry = tk.CTkEntry(root, placeholder_text="Digite o dia e hora")
         self.adicionar_hora_entry.place(x=450, y=187)
         
-        self.texto_hora = tk.CTkLabel(root, text="Hora:", font= ('arial', 10, 'bold') , text_color=PINK)
+        self.texto_hora = tk.CTkLabel(root, text="Hora:", font= ('arial', 10, 'bold') , text_color='pink')
         self.texto_hora.place(x= 450, y= 158)
         
         #botão opções
@@ -110,13 +107,12 @@ class App():
                     data = {"nome": nome,"cachorro": cachorro ,"preco": preco, "data": horario_formatado}
                     self.database.insert(data)
                     self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(cachorro)}", f'R${preco:.2f}', horario_formatado))
-                    
+                    self.carregar_dados()
             else:    
                 self.exibir_erro("ERRO: ALGUM DOS CAMPOS ESTA VÁZIO.")
         except ValueError:
             self.exibir_erro("ERRO: Formatação inválida de preço")
             
-        
           
     def carregar_dados(self):
         for item in self.lista.get_children():
@@ -170,11 +166,11 @@ class App():
         self.lista.configure(yscrollcommand=self.scrollbar.set)
                
     
-    #12/12/2024 12:3
+    #loop para adicionar cachorros até que o usuário saia
     def adicionar_janela_cachorro(self) -> list[str] | None:
        racas = []
        while True:
-            nova = tk.CTkInputDialog(text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color=PINK, button_fg_color='gray')
+            nova = tk.CTkInputDialog(text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color='pink', button_fg_color='gray')
             raca = nova.get_input()
         
             racas.append(raca)
@@ -184,11 +180,34 @@ class App():
                 break
             else:
                 continue
-            
-            
        return racas
+   
+   
+    def enviar_para_csv(self):
+        arquivo = self.database.table('admin').all()
         
-                         
+        nome_arquivo_csv = 'dados_exportados.csv'
+        
+        
+        lista=[]
+        
+        if arquivo != []:
+            for item in arquivo:
+                nome = item['nome']
+                cachorro = ','.join(item['cachorro'])
+                preco = str(item['preco'])
+                data = item['data']
+                lista.append([nome,f"'({cachorro})'", f'R${preco}', data])
+                      
+            try:
+                with open(nome_arquivo_csv, 'w', newline='') as arquivo_csv:
+                    for a in lista:
+                        arquivo_csv.write(' , '.join(map(str, a)) + "\r")
+            except Exception:
+                self.exibir_erro('ERROR')
+        else:
+            self.exibir_erro("ERRO: Não há nada para fazer um sumário")
+        
                
     def remover_cliente(self):
       try:
@@ -232,7 +251,7 @@ class App():
     def exibir_erro(self, texto):
         messagebox.showerror(title= "ERROR", message= texto)
         
-    def formatar_horario(self,horarios):
+    def formatar_horario(self,horarios) -> str | None:
      try:
         hora_formatada = datetime.strptime(horarios, "%d/%m/%Y %H:%M")
         return hora_formatada.strftime("%d/%m/%Y %H:%M")
