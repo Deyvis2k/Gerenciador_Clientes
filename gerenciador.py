@@ -3,9 +3,8 @@ from others_.cadastro import database
 from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
+from openpyxl import Workbook
 import csv
-
-
 
 
 class App():
@@ -43,7 +42,7 @@ class App():
         self.botao_adicionar.place(x = 450, y = 230)
         
         
-        self.botao_csv = tk.CTkButton(root, text="Fazer Sumário", width=50,font= self.fonte, text_color="pink", fg_color="gray", command= self.enviar_para_csv)
+        self.botao_csv = tk.CTkButton(root, text="Fazer Planilha", width=50,font= self.fonte, text_color="pink", fg_color="gray", command= self.enviar_para_excel)
         self.botao_csv.place(x=230,y= 162)
         
         
@@ -188,11 +187,12 @@ class App():
        return racas
    
    
-    def enviar_para_csv(self):
+    def enviar_para_excel(self):
         arquivo = self.database.table('admin').all()
-        
+            
         nome_arquivo_csv = 'dados_exportados.csv'
-        
+        wb = Workbook()
+        ws = wb.active
         
         lista=[]
         
@@ -208,6 +208,12 @@ class App():
                 with open(nome_arquivo_csv, 'w', newline='') as arquivo_csv:
                     for a in lista:
                         arquivo_csv.write(' , '.join(map(str, a)) + "\r")
+                        
+                with open(nome_arquivo_csv, mode='r', newline='') as file:
+                    reader = csv.reader(file)
+                    for row in reader:
+                        ws.append(row)
+                wb.save('planilha.xlsx')
             except Exception:
                 self.exibir_erro('ERROR')
         else:
