@@ -43,7 +43,7 @@ class App():
         
         
         self.botao_csv = tk.CTkButton(root, text="Fazer Planilha", width=50,font= self.fonte, text_color="pink", fg_color="gray", command= self.enviar_para_excel)
-        self.botao_csv.place(x=230,y= 162)
+        self.botao_csv.place(x=230,y= 160)
         
         
         
