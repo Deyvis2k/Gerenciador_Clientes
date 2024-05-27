@@ -177,7 +177,6 @@ class App():
             nova = tk.CTkInputDialog(text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color='pink', button_fg_color='gray')
             raca = nova.get_input()
             
-            
             racas.append(raca)
             
             if raca == "":
@@ -220,10 +219,7 @@ class App():
                     for b in lista_preco:
                         arquivo_csv.write("\r")
                         arquivo_csv.write(' , '.join(b) + "\r")
-                        
-                
-                
-                                
+                                        
                 with open(nome_arquivo_csv, mode='r', newline='') as file:
                     reader = csv.reader(file)
                     for row in reader:
