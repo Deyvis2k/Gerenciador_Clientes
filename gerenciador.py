@@ -110,7 +110,7 @@ class App():
                     
                     data = {"nome": nome,"cachorro": cachorro ,"preco": preco, "data": horario_formatado}
                     self.database.insert(data)
-                    self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(novo_cachorro)}", f'R${preco:.2f}', horario_formatado))
+                    self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(novo_cachorro)}", f'R${preco:,.2f}', horario_formatado))
                     self.carregar_dados()
             else:    
                 self.exibir_erro("ERRO: ALGUM DOS CAMPOS ESTA VÁZIO.")
@@ -127,7 +127,7 @@ class App():
         for item in data:
             id_numero = item.doc_id
             cachorros = item["cachorro"]
-            self.lista.insert("", "end", values=(id_numero, item["nome"], f"{', '.join(cachorros)}",f'R${item["preco"]:.2f}', item["data"]), tags="odd")      
+            self.lista.insert("", "end", values=(id_numero, item["nome"], f"{', '.join(cachorros)}",f'R${item["preco"]:,.2f}', item["data"]), tags="odd")      
           
     def arvore_frame(self, root):
         self.estilo = ttk.Style()
@@ -176,9 +176,12 @@ class App():
        while True:
             nova = tk.CTkInputDialog(text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color='pink', button_fg_color='gray')
             raca = nova.get_input()
-        
+            
+            
             racas.append(raca)
-        
+            
+            if raca == "":
+                racas.remove("")
             
             if raca == None:
                 break
@@ -189,26 +192,38 @@ class App():
    
     def enviar_para_excel(self):
         arquivo = self.database.table('admin').all()
-            
         nome_arquivo_csv = 'dados_exportados.csv'
         wb = Workbook()
         ws = wb.active
         
         lista=[]
+        lista_preco = []
         
         if arquivo != []:
+            total = sum(item['preco'] for item in arquivo)
+            media = total / len(arquivo)
             for item  in arquivo:
                 nome = item['nome']
                 cachorro = ' & '.join(item['cachorro'])
-                preco = str(item['preco'])
+                preco = (item['preco'])
                 data = item['data']
-                lista.append([nome,f"({cachorro})", f'R${preco}', data])
+                lista.append([nome,f"({cachorro})", f'R${preco:.2f}', data])
+                
+            lista_preco.append([f'Total: {total:.2f}',f'Média: {media:.2f}'])     
                       
             try:
                 with open(nome_arquivo_csv, 'w', newline='') as arquivo_csv:
-                    for a in lista:
-                        arquivo_csv.write(' , '.join(map(str, a)) + "\r")
+                    for b in lista:
+                        arquivo_csv.write(' , '.join(map(str, b)) + "\r")
                         
+                with open(nome_arquivo_csv, 'a', newline='') as arquivo_csv:
+                    for b in lista_preco:
+                        arquivo_csv.write("\r")
+                        arquivo_csv.write(' , '.join(b) + "\r")
+                        
+                
+                
+                                
                 with open(nome_arquivo_csv, mode='r', newline='') as file:
                     reader = csv.reader(file)
                     for row in reader:
