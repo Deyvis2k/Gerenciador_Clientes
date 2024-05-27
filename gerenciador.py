@@ -1,11 +1,13 @@
 import customtkinter as tk
-from others_.cadastro import database
+from tinydb import TinyDB
 from tkinter import messagebox
 from tkinter import ttk
 from datetime import datetime
 from openpyxl import Workbook
 import csv
 
+database = TinyDB('database.json', indent= 4)
+database.default_table_name = 'admin'
 
 class App():
     def __init__(self, database,root):
@@ -45,10 +47,6 @@ class App():
         self.botao_csv = tk.CTkButton(root, text="Fazer Planilha", width=50,font= self.fonte, text_color="pink", fg_color="gray", command= self.enviar_para_excel)
         self.botao_csv.place(x=230,y= 160)
         
-        
-        
-        
-
         #adicionar clientes - NOME
         self.texto_nome = tk.CTkLabel(root, text="Nome:", font= ('arial', 10, 'bold'),  text_color='pink')
         self.texto_nome.place(x= 450, y= 45)
@@ -95,18 +93,15 @@ class App():
                 if not cachorro:
                     return
                 
-                
                 id_numero = len(self.lista.get_children()) + 1
                 nome = self.adicionar_nome_entry.get()
                 preco = float(self.adicionar_preco_entry.get())
                 horario = self.adicionar_hora_entry.get()
                 horario_formatado = self.formatar_horario(horario)
                 
-            
                 if horario_formatado != None:
                     for item in cachorro:
                         novo_cachorro = item
-                    
                     
                     data = {"nome": nome,"cachorro": cachorro ,"preco": preco, "data": horario_formatado}
                     self.database.insert(data)
@@ -147,7 +142,6 @@ class App():
         
         self.lista.tag_configure('odd')
         
-        
         self.lista.heading("#0", text="")
         self.lista.heading("#1", text="ID")
         self.lista.heading("#2", text="Nome")
@@ -164,17 +158,15 @@ class App():
         
         self.lista.pack(fill="both", side="bottom")
         
-        
         self.scrollbar = ttk.Scrollbar(root, orient="vertical", command=self.lista.yview)
         self.scrollbar.place(x=585, y=275, height=140)  
         self.lista.configure(yscrollcommand=self.scrollbar.set)
                
-    
     #loop para adicionar cachorros até que o usuário saia
     def adicionar_janela_cachorro(self) -> list[str] | None:
        racas = []
        while True:
-            nova = tk.CTkInputDialog(text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color='pink', button_fg_color='gray')
+            nova = tk.CTkInputDialog(title="cachorro",text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color='pink', button_fg_color='gray')
             raca = nova.get_input()
             
             racas.append(raca)
@@ -187,7 +179,6 @@ class App():
             else:
                 continue
        return racas
-   
    
     def enviar_para_excel(self):
         arquivo = self.database.table('admin').all()
@@ -207,9 +198,9 @@ class App():
                 preco = (item['preco'])
                 data = item['data']
                 lista.append([nome,f"({cachorro})", f'R${preco:.2f}', data])
-                
+                    
             lista_preco.append([f'Total: {total:.2f}',f'Média: {media:.2f}'])     
-                      
+        
             try:
                 with open(nome_arquivo_csv, 'w', newline='') as arquivo_csv:
                     for b in lista:
@@ -305,7 +296,6 @@ class App():
             return None
     
         
-            
 if __name__ == "__main__":
    core = tk.CTk()
    app = App(database,core)

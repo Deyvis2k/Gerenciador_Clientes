@@ -1,9 +1,14 @@
 database.json
 dados_exportados.csv
 planilha.xlsx
+/others_
+/others_/cadastro.py
+/others_/cadastro.py
 
 __pycache__/janela.cpython-311.pyc
 *.pyc
+
+
 
 __pycache__
 __pycache__/janela.cpython-311.pyc
