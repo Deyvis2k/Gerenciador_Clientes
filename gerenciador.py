@@ -9,7 +9,7 @@ import csv
 database = TinyDB('database.json', indent= 4)
 database.default_table_name = 'admin'
 
-class App():
+class App:
     def __init__(self, database,root):
         super().__init__()
         self.root = root
@@ -86,9 +86,8 @@ class App():
     def adicionar_cliente(self):
         try:
             if self.adicionar_nome_entry.get() != "" and self.adicionar_preco_entry.get() != "" and self.adicionar_hora_entry.get() != "":
-                cachorro = self.adicionar_janela_cachorro()
-                
-                cachorro = [item for item in cachorro if item is not None]
+                cachorro_lista = self.adicionar_janela_cachorro()
+                cachorro = {item: value for item, value in cachorro_lista if item is not None and item.strip() != '' and value is not None and value.strip() != ''}
                 
                 if not cachorro:
                     return
@@ -100,12 +99,11 @@ class App():
                 horario_formatado = self.formatar_horario(horario)
                 
                 if horario_formatado != None:
-                    for item in cachorro:
-                        novo_cachorro = item
-                    
-                    data = {"nome": nome,"cachorro": cachorro ,"preco": preco, "data": horario_formatado}
+                    data = {"nome": nome,"cachorro": cachorro,"preco": preco, "data": horario_formatado}
                     self.database.insert(data)
-                    self.lista.insert("", "end", values=(id_numero, nome,f"{', '.join(novo_cachorro)}", f'R${preco:,.2f}', horario_formatado))
+                    
+                    cachorro_str = ', '.join([f"{item}: {value}" for item, value in cachorro.items()])
+                    self.lista.insert("", "end", values=(id_numero, nome, cachorro_str,f'R${preco:,.2f}', horario_formatado))
                     self.carregar_dados()
             else:    
                 self.exibir_erro("ERRO: ALGUM DOS CAMPOS ESTA VÁZIO.")
@@ -122,7 +120,9 @@ class App():
         for item in data:
             id_numero = item.doc_id
             cachorros = item["cachorro"]
-            self.lista.insert("", "end", values=(id_numero, item["nome"], f"{', '.join(cachorros)}",f'R${item["preco"]:,.2f}', item["data"]), tags="odd")      
+            cachorro_str = ', '.join([f"{item} ({value})" for item, value in cachorros.items()])
+            
+            self.lista.insert("", "end", values=(id_numero, item["nome"],cachorro_str,f'R${item["preco"]:,.2f}', item["data"]), tags="odd")      
           
     def arvore_frame(self, root):
         self.estilo = ttk.Style()
@@ -145,7 +145,7 @@ class App():
         self.lista.heading("#0", text="")
         self.lista.heading("#1", text="ID")
         self.lista.heading("#2", text="Nome")
-        self.lista.heading("#3", text="Cachorro(s)")
+        self.lista.heading("#3", text="Cachorros(alergia)")
         self.lista.heading("#4", text="Preço")
         self.lista.heading("#5", text="Data")
         
@@ -163,22 +163,54 @@ class App():
         self.lista.configure(yscrollcommand=self.scrollbar.set)
                
     #loop para adicionar cachorros até que o usuário saia
-    def adicionar_janela_cachorro(self) -> list[str] | None:
-       racas = []
-       while True:
-            nova = tk.CTkInputDialog(title="cachorro",text="Digite a raça do cachorro", font=('arial', 12,'bold'), button_text_color='pink', button_hover_color='black', entry_text_color='pink', button_fg_color='gray')
-            raca = nova.get_input()
+    def adicionar_janela_cachorro(self) -> list[tuple]:
+        self.alergias = []
+        self.racas = []
+
+        win = tk.CTkToplevel(self.root)
+        win.geometry("300x200")
+        win.title('Adicionar Cachorro')
+        win.resizable(False, False)
+        
+        win.lift(aboveThis=self.root)
+        win.focus_force()
+
+        texto_cachorro = tk.CTkLabel(win, text="CADASTRO CACHORRO", font=('arial', 12, 'bold'))
+        texto_cachorro.place(x=75, y=5)
+        
+        texto_raca = tk.CTkLabel(win, text="Cachorro:", font=('arial', 10, 'bold'), text_color='PINK')
+        texto_raca.place(x=53, y=36)
+
+        self.raca_input = tk.CTkEntry(win, placeholder_text="Coloque a raça do cachorro:", width=200)
+        self.raca_input.place(x=50, y=60)
+        
+        texto_alergia = tk.CTkLabel(win, text="Alergia:", font=('arial', 10, 'bold'), text_color='PINK')
+        texto_alergia.place(x=53, y=89)
+        
+        self.alergia_input = tk.CTkEntry(win, placeholder_text="Caso haja, digite a alergia:", width=200)
+        self.alergia_input.place(x=50, y=115)
+
+        botao_dog = tk.CTkButton(win, text="Enviar", width=50, font=self.fonte, text_color="pink", fg_color="gray", command=lambda: self.capturar_dados(win))
+        botao_dog.place(x=50, y=150)
+
+        win.wait_window()
+        dados_cachorro = list(zip(self.racas, self.alergias))
+        return dados_cachorro
+   
+    def capturar_dados(self, win):
+        raca = self.raca_input.get()
+        alergia = self.alergia_input.get()
+        
+        if raca:
+            self.racas.append(raca)
+
+        if alergia:
+            self.alergias.append(alergia)
             
-            racas.append(raca)
-            
-            if raca == "":
-                racas.remove("")
-            
-            if raca == None:
-                break
-            else:
-                continue
-       return racas
+        if alergia == '':
+            alergia = 'Não'
+            self.alergias.append(alergia)
+
    
     def enviar_para_excel(self):
         arquivo = self.database.table('admin').all()
@@ -194,10 +226,11 @@ class App():
             media = total / len(arquivo)
             for item  in arquivo:
                 nome = item['nome']
-                cachorro = ' & '.join(item['cachorro'])
-                preco = (item['preco'])
+                cachorro = item['cachorro']
+                cachorro_str = ' & '.join([f"{item}[{value}]" for item, value in cachorro.items()])
+                preco = item['preco']
                 data = item['data']
-                lista.append([nome,f"({cachorro})", f'R${preco:.2f}', data])
+                lista.append([nome,f"({cachorro_str})", f'R${preco:.2f}', data])
                     
             lista_preco.append([f'Total: {total:.2f}',f'Média: {media:.2f}'])     
         
