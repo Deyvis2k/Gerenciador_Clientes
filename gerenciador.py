@@ -9,7 +9,7 @@ import csv
 database = TinyDB('database.json', indent= 4)
 database.default_table_name = 'admin'
 
-class App():
+class App:
     def __init__(self, database,root):
         super().__init__()
         self.root = root
