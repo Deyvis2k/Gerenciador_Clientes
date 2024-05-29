@@ -20,7 +20,6 @@ class App:
         self.database = database
         self.opcao_selecionadas = tk.StringVar()
         
-        
         #remover cliente
         self.texto_remover = tk.CTkLabel(root, text="REMOVER CLIENTE:", font= ('arial', 12, 'bold'))
         self.texto_remover.place(x= 230, y= 20)
@@ -42,7 +41,6 @@ class App:
         
         self.botao_adicionar = tk.CTkButton(root, text="Enviar" ,font= self.fonte, width=50, command= self.adicionar_cliente, text_color="pink", fg_color="gray")
         self.botao_adicionar.place(x = 450, y = 230)
-        
         
         self.botao_csv = tk.CTkButton(root, text="Fazer Planilha", width=50,font= self.fonte, text_color="pink", fg_color="gray", command= self.enviar_para_excel)
         self.botao_csv.place(x=230,y= 160)
@@ -82,7 +80,6 @@ class App:
         #Treeview - Arvore da database
         self.arvore_frame(root)
         
-    
     def adicionar_cliente(self):
         try:
             if self.adicionar_nome_entry.get() != "" and self.adicionar_preco_entry.get() != "" and self.adicionar_hora_entry.get() != "":
@@ -109,8 +106,7 @@ class App:
                 self.exibir_erro("ERRO: ALGUM DOS CAMPOS ESTA VÁZIO.")
         except ValueError:
             self.exibir_erro("ERRO: Formatação inválida de preço")
-            
-          
+                      
     def carregar_dados(self):
         for item in self.lista.get_children():
             self.lista.delete(item)
@@ -210,7 +206,6 @@ class App:
         if alergia == '':
             alergia = 'Não'
             self.alergias.append(alergia)
-
    
     def enviar_para_excel(self):
         arquivo = self.database.table('admin').all()
@@ -255,7 +250,6 @@ class App:
             with open(nome_arquivo_csv, 'w', newline='') as arquivo_vazio_csv:
                 arquivo_vazio_csv.write(' ')
         
-               
     def remover_cliente(self):
       try:
         if self.database.all() != []:
@@ -273,7 +267,6 @@ class App:
         if valor_se_permitido.isdigit() or valor_se_permitido == "":
             return True
         return False
-    
       
     def excluir_tudo(self):
         if self.database.all() != []:
@@ -293,7 +286,6 @@ class App:
             self.calcular_media()
         elif selecionado == "total":
             self.total_preco()
-    
             
     def exibir_erro(self, texto):
         messagebox.showerror(title= "ERROR", message= texto)
@@ -327,7 +319,6 @@ class App:
         else:
             self.exibir_erro("Não há nenhum item")
             return None
-    
         
 if __name__ == "__main__":
    core = tk.CTk()
