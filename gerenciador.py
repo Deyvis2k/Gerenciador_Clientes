@@ -9,9 +9,11 @@ import csv
 database = TinyDB('database.json', indent= 4)
 database.default_table_name = 'admin'
 
+
 class App:
     def __init__(self, database,root):
         super().__init__()
+        tk.set_appearance_mode('dark')
         self.root = root
         self.fonte = ('arial',10,'bold')
         self.root.title("GERENCIADOR DE CLIENTES")
@@ -148,7 +150,7 @@ class App:
         self.lista.column("#0", width=0, stretch=False)
         self.lista.column("#1", width=29, stretch=False)
         self.lista.column("#2", width=160, stretch=False)
-        self.lista.column("#3", width=180, stretch=False)
+        self.lista.column("#3", width=180)
         self.lista.column("#4", width=100, stretch=False)
         self.lista.column("#5", width=120, stretch=False)
         
