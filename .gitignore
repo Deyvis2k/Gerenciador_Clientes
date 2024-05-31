@@ -1,11 +1,7 @@
 database.json
 dados_exportados.csv
 planilha.xlsx
-/others_
-/others_/cadastro.py
-/others_/cadastro.py
 
-__pycache__/janela.cpython-311.pyc
 *.pyc
 
 *.venv
@@ -13,14 +9,8 @@ __pycache__/janela.cpython-311.pyc
 venv
 .venv
 __pycache__
-__pycache__/janela.cpython-311.pyc
 /__pycache__
-/__pycache__
-/__pycache__
-/others_/__pycache__
-*.pyc
-*.pyc
-*.pyc
-*.pyc
-.vscode
+
+
+
 
