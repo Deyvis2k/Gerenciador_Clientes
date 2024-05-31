@@ -3,13 +3,9 @@ dados_exportados.csv
 planilha.xlsx
 
 *.pyc
-
-*.venv
 *.json
 venv
-.venv
 __pycache__
-/__pycache__
 
 
 
