@@ -2,12 +2,10 @@
     CHECAR CONSULTA, REMOVER CONSULTA, MÉDIA, TOTAL
     EXCLUIR DATABASE.
 """
+from gui.app import GerenciadorClientes
 import customtkinter as tk
-from gerenciador import database
-from gerenciador import App
 
-
-
-core = tk.CTk()
-app = App(database,core)
-app.root.mainloop()
+if __name__ == "__main__":
+    root = tk.CTk()
+    app = GerenciadorClientes(root)
+    root.mainloop()

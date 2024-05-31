@@ -8,8 +8,9 @@ planilha.xlsx
 __pycache__/janela.cpython-311.pyc
 *.pyc
 
-
-
+*.venv
+*.json
+venv
 __pycache__
 __pycache__/janela.cpython-311.pyc
 /__pycache__
