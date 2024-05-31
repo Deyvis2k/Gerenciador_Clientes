@@ -1,7 +1,3 @@
-""" APLICATIVO  TRABALHO EXTENSÃO: CADASTRAR CONSULTA,
-    CHECAR CONSULTA, REMOVER CONSULTA, MÉDIA, TOTAL
-    EXCLUIR DATABASE.
-"""
 from gui.app import GerenciadorClientes
 import customtkinter as tk
 
