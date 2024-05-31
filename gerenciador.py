@@ -233,6 +233,10 @@ class App:
         
             try:
                 with open(nome_arquivo_csv, 'w', newline='') as arquivo_csv:
+                    nome_colunas = ['Nome', 'Cachorro', 'Preço', 'Data']
+                    escritor = csv.DictWriter(arquivo_csv, fieldnames=nome_colunas)
+                    escritor.writeheader()
+                    
                     for b in lista:
                         arquivo_csv.write(' , '.join(map(str, b)) + "\r")
                         
