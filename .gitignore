@@ -11,6 +11,7 @@ __pycache__/janela.cpython-311.pyc
 *.venv
 *.json
 venv
+.venv
 __pycache__
 __pycache__/janela.cpython-311.pyc
 /__pycache__
