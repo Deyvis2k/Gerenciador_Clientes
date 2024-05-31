@@ -3,7 +3,7 @@
     EXCLUIR DATABASE.
 """
 import customtkinter as tk
-from others_.cadastro import database
+from gerenciador import database
 from gerenciador import App
 
 

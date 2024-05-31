@@ -12,7 +12,6 @@ database.default_table_name = 'admin'
 
 class App:
     def __init__(self, database,root):
-        super().__init__()
         tk.set_appearance_mode('dark')
         self.root = root
         self.fonte = ('arial',10,'bold')
@@ -325,8 +324,3 @@ class App:
         else:
             self.exibir_erro("Não há nenhum item")
             return None
-        
-if __name__ == "__main__":
-   core = tk.CTk()
-   app = App(database,core)
-   app.root.mainloop()
