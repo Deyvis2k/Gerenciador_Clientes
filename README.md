@@ -5,22 +5,21 @@
 Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em Python. O sistema permite cadastrar o nome do cliente, o preço da tosa, a data do serviço, os cachorros e possíveis alergias dos cachorros. Utiliza customtkinter para a interface gráfica, tinydb para o banco de dados e openpyxl para a manipulação de planilhas Excel.
 
 
-🛠️- Funcionalidades:
+🛠️**- Funcionalidades:**
 
-. 📋 Cadastro de clientes
-. 💰 Registro do preço da tosa
-. 📅 Registro da data do serviço
-. 🐕 Cadastro de cachorros
-. ⚠️ Registro de alergias dos cachorros
+1. 📋 Cadastro de clientes
+2. 💰 Registro do preço da tosa
+3. 📅 Registro da data do serviço
+4. 🐕 Cadastro de cachorros
+5. ⚠️ Registro de alergias dos cachorros
 
-🖥️- Tecnologias Utilizadas:
+🖥️**- Tecnologias Utilizadas:**
+1. Python
+2. customtkinter - Biblioteca para criar interfaces gráficas modernas
+3. tinydb - Banco de dados NoSQL simples e leve
+4. openpyxl - Biblioteca para ler e escrever arquivos Excel (.xlsx)
 
-. Python
-. customtkinter - Biblioteca para criar interfaces gráficas modernas
-. tinydb - Banco de dados NoSQL simples e leve
-. openpyxl - Biblioteca para ler e escrever arquivos Excel (.xlsx)
-
-Instalação
+**Instalação:**
 
 1. Clone o repositório:
    git clone https://github.com/Deyvis2k/Gerenciador_Clientes.git
@@ -35,7 +34,7 @@ Instalação
 4. Instale as dependências:
    pip install -r requirements.txt
 
-Uso:
+**Uso:**
 
 1. Execute o script principal do projeto:
    python main.py
