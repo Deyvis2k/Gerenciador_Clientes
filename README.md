@@ -31,8 +31,9 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 
 3. Crie um ambiente virtual (opcional, mas recomendado):
 
-     python -m venv venv
-     source venv/bin/activate  # No Windows use `venv\Scripts\activate`
+   python -m venv venv
+   source venv/bin/activate  
+   # No Windows use `venv\Scripts\activate`
 
 4. Instale as dependências:
 
