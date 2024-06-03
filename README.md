@@ -1,6 +1,7 @@
 # Gerenciamento de Clientes para Petshop
 
 📋- DESCRIÇÃO
+
 Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em Python. O sistema permite cadastrar o nome do cliente, o preço da tosa, a data do serviço, os cachorros e possíveis alergias dos cachorros. Utiliza customtkinter para a interface gráfica, tinydb para o banco de dados e openpyxl para a manipulação de planilhas Excel.
 
 
