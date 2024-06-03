@@ -27,17 +27,13 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 2. Navegue até o diretório do projeto:
    cd Gerenciador_Clientes
 
-3. ```python
-Crie um ambiente virtual (opcional, mas recomendado):
-     python -m venv venv
-     source venv/bin/activate  # No Windows use `venv\Scripts\activate`
-```
+3. Crie um ambiente virtual (opcional, mas recomendado):
+     `python -m venv venv
+     source venv/bin/activate  # No Windows use `venv\Scripts\activate``
 
-```python
 4. Instale as dependências:
    pip install -r requirements.txt
 
-```
 **Uso:**
 
 1. Execute o script principal do projeto:
