@@ -32,7 +32,7 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 3. Crie um ambiente virtual (opcional, mas recomendado):
 
    python -m venv venv
-   
+
    source venv/bin/activate  
    **No Windows use:** `venv\Scripts\activate`
 
@@ -43,6 +43,7 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 **Uso:**
 
 1. Execute o script principal do projeto:
-   python main.py
+
+   **python main.py**
 
 2. A interface será exibida, onde você pode cadastrar clientes, é de fácil uso e entendimento.
