@@ -5,7 +5,7 @@
 Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em Python. O sistema permite cadastrar o nome do cliente, o preço da tosa, a data do serviço, os cachorros e possíveis alergias dos cachorros. Utiliza customtkinter para a interface gráfica, tinydb para o banco de dados e openpyxl para a manipulação de planilhas Excel.
 
 
-🛠️**- Funcionalidades:**
+🛠️- **Funcionalidades:**
 
 1. 📋 Cadastro de clientes
 2. 💰 Registro do preço da tosa
@@ -13,7 +13,7 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 4. 🐕 Cadastro de cachorros
 5. ⚠️ Registro de alergias dos cachorros
 
-🖥️**- Tecnologias Utilizadas:**
+🖥️- **Tecnologias Utilizadas:**
 1. Python
 2. customtkinter - Biblioteca para criar interfaces gráficas modernas
 3. tinydb - Banco de dados NoSQL simples e leve
