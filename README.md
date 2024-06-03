@@ -33,7 +33,7 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 
    python -m venv venv
    source venv/bin/activate  
-   No Windows use `venv\Scripts\activate`
+   **No Windows use:** `venv\Scripts\activate`
 
 4. Instale as dependências:
 
