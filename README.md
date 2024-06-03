@@ -22,16 +22,20 @@ Este é um projeto de gerenciamento de clientes para um petshop, desenvolvido em
 **Instalação:**
 
 1. Clone o repositório:
+
    git clone https://github.com/Deyvis2k/Gerenciador_Clientes.git
 
 2. Navegue até o diretório do projeto:
+
    cd Gerenciador_Clientes
 
 3. Crie um ambiente virtual (opcional, mas recomendado):
-     `python -m venv venv
-     source venv/bin/activate  # No Windows use `venv\Scripts\activate``
+
+     python -m venv venv
+     source venv/bin/activate  # No Windows use `venv\Scripts\activate`
 
 4. Instale as dependências:
+
    pip install -r requirements.txt
 
 **Uso:**
